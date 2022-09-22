@@ -52,4 +52,19 @@ describe('Test voucher use', () => {
     expect(applied).toBe(false);
   });
 
+  it('should not discount if the amount is below 100.', async () => {
+    // arrange
+    const CODE_SIZE = 10;
+    const code = faker.random.alphaNumeric(CODE_SIZE);
+    const amount = 99;
+    jest.spyOn(voucherRepository, 'getVoucherByCode')
+      .mockResolvedValueOnce({} as Voucher);
+
+    // act
+    const { applied } = await voucherService.applyVoucher(code, amount);
+
+    // assert
+    expect(applied).toBe(false);
+  });
+
 });
