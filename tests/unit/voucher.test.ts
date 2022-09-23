@@ -29,8 +29,11 @@ describe('Test voucher creation', () => {
     jest.spyOn(voucherRepository, 'getVoucherByCode')
       .mockReturnValueOnce({} as Prisma.Prisma__VoucherClient<Voucher>);
 
-    // act, assert
-    await expect(voucherService.createVoucher(code, discount)).rejects.toBeTruthy();
+    // act
+    const promise = voucherService.createVoucher(code, discount);
+
+    // assert
+    await expect(promise).rejects.toBeTruthy();
   });
 
 });
@@ -95,8 +98,11 @@ describe('Test voucher use', () => {
     const amount = 200;
     jest.spyOn(voucherRepository, 'getVoucherByCode').mockReturnValueOnce(null);
 
-    // act, assert
-    await expect(voucherService.applyVoucher(code, amount)).rejects.toBeTruthy();
+    // act
+    const promise = voucherService.applyVoucher(code, amount);
+
+    // assert
+    await expect(promise).rejects.toBeTruthy();
   });
 
 });
