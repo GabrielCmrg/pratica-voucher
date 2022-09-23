@@ -67,4 +67,25 @@ describe('Test voucher use', () => {
     expect(applied).toBe(false);
   });
 
+  it('should discount if the amount is over 100 and return the final value.', async () => {
+    // arrange
+    const CODE_SIZE = 10;
+    const code = faker.random.alphaNumeric(CODE_SIZE);
+    const discount = 20;
+    const amount = 200;
+    const id = 1;
+    const used = false;
+    const expectedFinalAmount = amount * (100 - discount) / 100;
+    jest.spyOn(voucherRepository, 'getVoucherByCode')
+      .mockResolvedValueOnce({ id, discount, code, used } as Voucher);
+    jest.spyOn(voucherRepository, 'useVoucher').mockImplementation((): any => { });
+
+    // act
+    const { applied, finalAmount } = await voucherService.applyVoucher(code, amount);
+
+    // assert
+    expect(applied).toBe(true);
+    expect(finalAmount).toBe(expectedFinalAmount);
+  });
+
 });
