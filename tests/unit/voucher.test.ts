@@ -88,4 +88,15 @@ describe('Test voucher use', () => {
     expect(finalAmount).toBe(expectedFinalAmount);
   });
 
+  it('should throw when the code doesn\'t exist in database.', async () => {
+    // arrange
+    const CODE_SIZE = 10;
+    const code = faker.random.alphaNumeric(CODE_SIZE);
+    const amount = 200;
+    jest.spyOn(voucherRepository, 'getVoucherByCode').mockReturnValueOnce(null);
+
+    // act, assert
+    await expect(voucherService.applyVoucher(code, amount)).rejects.toBeTruthy();
+  });
+
 });
